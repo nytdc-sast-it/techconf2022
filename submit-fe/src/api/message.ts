@@ -25,15 +25,3 @@ interface MessageStatus {
 export function setMessageStatus(data: MessageStatus) {
   return axios.post<MessageListType>('/api/message/read', data);
 }
-
-export interface ChatRecord {
-  id: number;
-  username: string;
-  content: string;
-  time: string;
-  isCollect: boolean;
-}
-
-export function queryChatList() {
-  return axios.post<ChatRecord[]>('/api/chat/list');
-}

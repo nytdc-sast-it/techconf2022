@@ -1,1 +1,1 @@
-rootProject.name = "techconf-backend-ws"
+rootProject.name = "techconf"

@@ -1,45 +1,54 @@
 <template>
-  <div class="login-form-wrapper">
-    <div class="login-form-title">科技节弹幕发送平台</div>
-    <div class="login-form-sub-title">尽情的发送弹幕吧~</div>
-    <div class="login-form-error-msg">{{ errorMessage }}</div>
+  <div class="submit-form-wrapper">
+    <div class="submit-form-title">科技节弹幕发送平台</div>
+    <div class="submit-form-sub-title">尽情的发送弹幕吧~</div>
+    <div class="submit-form-error-msg">{{ errorMessage }}</div>
     <a-form
-      ref="loginForm"
-      :model="userInfo"
-      class="login-form"
+      ref="submitForm"
+      :model="submitFormInfo"
+      class="submit-form"
       layout="vertical"
       @submit="handleSubmit"
     >
       <a-form-item
-        field="username"
-        :rules="[{ required: true, message: $t('login.form.userName.errMsg') }]"
+        field="name"
+        :rules="[{ required: true, message: '请输入姓名' }]"
         :validate-trigger="['change', 'blur']"
         hide-label
       >
-        <a-input
-          v-model="userInfo.username"
-          :placeholder="$t('login.form.userName.placeholder')"
-        >
+        <a-input v-model="submitFormInfo.name" placeholder="姓名">
           <template #prefix>
             <icon-user />
           </template>
         </a-input>
       </a-form-item>
       <a-form-item
-        field="password"
-        :rules="[{ required: true, message: $t('login.form.password.errMsg') }]"
+        field="id"
+        :rules="[{ required: true, message: '请输入学号' }]"
         :validate-trigger="['change', 'blur']"
         hide-label
       >
-        <a-input-password
-          v-model="userInfo.password"
-          :placeholder="$t('login.form.password.placeholder')"
+        <a-input v-model="submitFormInfo.id" placeholder="学号" allow-clear>
+          <template #prefix>
+            <icon-lock />
+          </template>
+        </a-input>
+      </a-form-item>
+      <a-form-item
+        field="danmu"
+        :rules="[{ required: true, message: '请输入弹幕内容' }]"
+        :validate-trigger="['change', 'blur']"
+        hide-label
+      >
+        <a-input
+          v-model="submitFormInfo.danmu"
+          placeholder="弹幕内容"
           allow-clear
         >
           <template #prefix>
             <icon-lock />
           </template>
-        </a-input-password>
+        </a-input>
       </a-form-item>
       <a-space :size="16" direction="vertical">
         <a-button type="primary" html-type="submit" long :loading="loading">
@@ -55,26 +64,19 @@
   import { useRouter } from 'vue-router';
   import { Message } from '@arco-design/web-vue';
   import { ValidatedError } from '@arco-design/web-vue/es/form/interface';
-  import { useI18n } from 'vue-i18n';
-  import { useStorage } from '@vueuse/core';
   import { useUserStore } from '@/store';
   import useLoading from '@/hooks/loading';
   import type { LoginData } from '@/api/user';
 
   const router = useRouter();
-  const { t } = useI18n();
   const errorMessage = ref('');
   const { loading, setLoading } = useLoading();
   const userStore = useUserStore();
 
-  const loginConfig = useStorage('login-config', {
-    rememberPassword: true,
-    username: 'admin', // 演示默认值
-    password: 'admin', // demo default value
-  });
-  const userInfo = reactive({
-    username: loginConfig.value.username,
-    password: loginConfig.value.password,
+  const submitFormInfo = reactive({
+    name: '',
+    id: '',
+    danmu: '',
   });
 
   const handleSubmit = async ({
@@ -96,13 +98,7 @@
             ...othersQuery,
           },
         });
-        Message.success(t('login.form.login.success'));
-        const { rememberPassword } = loginConfig.value;
-        const { username, password } = values;
-        // 实际生产环境需要进行加密存储。
-        // The actual production environment requires encrypted storage.
-        loginConfig.value.username = rememberPassword ? username : '';
-        loginConfig.value.password = rememberPassword ? password : '';
+        Message.success('登录成功');
       } catch (err) {
         errorMessage.value = (err as Error).message;
       } finally {
@@ -110,13 +106,10 @@
       }
     }
   };
-  const setRememberPassword = (value: boolean) => {
-    loginConfig.value.rememberPassword = value;
-  };
 </script>
 
 <style lang="less" scoped>
-  .login-form {
+  .submit-form {
     &-wrapper {
       width: 320px;
     }

@@ -2,7 +2,7 @@
   <div class="container">
     <div class="content">
       <div class="content-inner">
-        <LoginForm />
+        <SubmitForm />
       </div>
       <div class="footer">
         <Footer />
@@ -13,7 +13,7 @@
 
 <script lang="ts" setup>
   import Footer from '@/components/footer/index.vue';
-  import LoginForm from './components/login-form.vue';
+  import SubmitForm from './components/submit-form.vue';
 </script>
 
 <style lang="less" scoped>

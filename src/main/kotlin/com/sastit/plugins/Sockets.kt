@@ -11,8 +11,11 @@ import io.ktor.server.websocket.webSocket
 import io.ktor.websocket.Frame
 import io.ktor.websocket.readText
 import java.time.Duration
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 
 val container = ContainerWrapper.getInstance()
+val logger: Logger = LoggerFactory.getLogger(Application::class.java)
 
 fun Application.configureSockets() {
   install(WebSockets) {
@@ -29,6 +32,8 @@ fun Application.configureSockets() {
           val text = frame.readText()
           if (container.size == 20) container.removeLast()
           container.addFirst(text)
+          logger.info("Received: $text")
+          logger.info("Sent: $text")
           outgoing.send(Frame.Text(text))
         }
       }

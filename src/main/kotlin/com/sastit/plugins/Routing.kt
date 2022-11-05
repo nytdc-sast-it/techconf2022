@@ -15,10 +15,16 @@ fun Application.configureRouting() {
     }
 
     get("/get-award") {
-      val i = Random().nextInt(container.size)
-      val text = container[i]
-      container.removeAt(i)
-      call.respondText(text)
+      if (container.size == 0) {
+        logger.info("No awards")
+        call.respondText("No awards yet")
+      } else {
+        val i = Random().nextInt(container.size)
+        val text = container[i]
+        container.removeAt(i)
+        logger.info("Award to $text")
+        call.respondText(text)
+      }
     }
   }
 }

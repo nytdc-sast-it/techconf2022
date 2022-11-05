@@ -62,16 +62,13 @@
 <script lang="ts" setup>
   import { ref, reactive } from 'vue';
   import { useRouter } from 'vue-router';
-  import { Message } from '@arco-design/web-vue';
   import { ValidatedError } from '@arco-design/web-vue/es/form/interface';
-  import { useUserStore } from '@/store';
   import useLoading from '@/hooks/loading';
-  import type { LoginData } from '@/api/user';
+  import { Message } from '@arco-design/web-vue';
 
   const router = useRouter();
   const errorMessage = ref('');
   const { loading, setLoading } = useLoading();
-  const userStore = useUserStore();
 
   const submitFormInfo = reactive({
     name: '',
@@ -90,15 +87,15 @@
     if (!errors) {
       setLoading(true);
       try {
-        await userStore.login(values as LoginData);
-        const { redirect, ...othersQuery } = router.currentRoute.value.query;
-        router.push({
-          name: (redirect as string) || 'Workplace',
-          query: {
-            ...othersQuery,
-          },
-        });
-        Message.success('登录成功');
+        const ws = new WebSocket('wss://techconf.sastit.com/api/ws');
+        ws.onopen = () => {
+          ws.send(JSON.stringify(values));
+          Message.success('发送成功');
+          submitFormInfo.name = '';
+          submitFormInfo.id = '';
+          submitFormInfo.danmu = '';
+          ws.close();
+        };
       } catch (err) {
         errorMessage.value = (err as Error).message;
       } finally {

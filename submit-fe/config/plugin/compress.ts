@@ -3,7 +3,7 @@
  * gzip压缩
  * https://github.com/anncwb/vite-plugin-compression
  */
-import type { Plugin } from 'vite';
+import type {Plugin} from 'vite';
 import compressPlugin from 'vite-plugin-compression';
 
 export default function configCompressPlugin(

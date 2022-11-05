@@ -1,13 +1,13 @@
-import { defineStore } from 'pinia';
+import {defineStore} from 'pinia';
 import {
   login as userLogin,
   logout as userLogout,
   getUserInfo,
   LoginData,
 } from '@/api/user';
-import { setToken, clearToken } from '@/utils/auth';
-import { removeRouteListener } from '@/utils/route-listener';
-import { UserState } from './types';
+import {setToken, clearToken} from '@/utils/auth';
+import {removeRouteListener} from '@/utils/route-listener';
+import {UserState} from './types';
 import useAppStore from '../app';
 
 const useUserStore = defineStore('user', {
@@ -32,7 +32,7 @@ const useUserStore = defineStore('user', {
 
   getters: {
     userInfo(state: UserState): UserState {
-      return { ...state };
+      return {...state};
     },
   },
 

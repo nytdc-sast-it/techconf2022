@@ -1,8 +1,8 @@
 import axios from 'axios';
-import type { AxiosRequestConfig, AxiosResponse } from 'axios';
-import { Message, Modal } from '@arco-design/web-vue';
-import { useUserStore } from '@/store';
-import { getToken } from '@/utils/auth';
+import type {AxiosRequestConfig, AxiosResponse} from 'axios';
+import {Message, Modal} from '@arco-design/web-vue';
+import {useUserStore} from '@/store';
+import {getToken} from '@/utils/auth';
 
 export interface HttpResponse<T = unknown> {
   status: number;

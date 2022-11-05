@@ -1,4 +1,4 @@
-import {mergeConfig} from 'vite';
+import { mergeConfig } from 'vite';
 import eslint from 'vite-plugin-eslint';
 import baseConfig from './vite.config.base';
 

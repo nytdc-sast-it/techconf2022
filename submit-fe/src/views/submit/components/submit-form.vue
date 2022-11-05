@@ -24,7 +24,13 @@
       </a-form-item>
       <a-form-item
         field="id"
-        :rules="[{ required: true, message: '请输入学号' }]"
+        :rules="[
+          {
+            match: /^[1-2][0-9]{7}$/,
+            message: '学号格式错误',
+          },
+          { required: true, message: '请输入学号' },
+        ]"
         :validate-trigger="['change', 'blur']"
         hide-label
       >
@@ -61,12 +67,10 @@
 
 <script lang="ts" setup>
   import { ref, reactive } from 'vue';
-  import { useRouter } from 'vue-router';
   import { ValidatedError } from '@arco-design/web-vue/es/form/interface';
   import useLoading from '@/hooks/loading';
   import { Message } from '@arco-design/web-vue';
 
-  const router = useRouter();
   const errorMessage = ref('');
   const { loading, setLoading } = useLoading();
 

@@ -21,7 +21,9 @@ fun Application.configureRouting() {
       } else {
         val i = Random().nextInt(container.size)
         val text = container[i]
-        container.removeAt(i)
+        synchronized(container) {
+          container.removeAt(i)
+        }
         logger.info("Award to $text")
         call.respondText(text)
       }

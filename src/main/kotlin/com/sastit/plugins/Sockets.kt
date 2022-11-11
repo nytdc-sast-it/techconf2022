@@ -8,7 +8,6 @@ import io.ktor.server.websocket.WebSockets
 import io.ktor.server.websocket.pingPeriod
 import io.ktor.server.websocket.timeout
 import io.ktor.server.websocket.webSocket
-import io.ktor.util.logging.error
 import io.ktor.websocket.DefaultWebSocketSession
 import io.ktor.websocket.Frame
 import io.ktor.websocket.readText
@@ -37,8 +36,10 @@ fun Application.configureSockets() {
         for (frame in incoming) {
           if (frame is Frame.Text) {
             val text = frame.readText()
-            if (container.size == 20) container.removeLast()
-            container.addFirst(text)
+            synchronized(container) {
+              if (container.size == 20) container.removeLast()
+              container.addFirst(text)
+            }
             logger.info("Received: $text")
             logger.info("Sent: $text")
             connections.forEach {
@@ -46,10 +47,9 @@ fun Application.configureSockets() {
             }
           }
         }
-      } catch (e: Exception) {
-        logger.error(e)
+      } catch (ignored: Exception) {
       } finally {
-        println("Removing $this!")
+        logger.info("Removing $this!")
         connections -= this
       }
     }

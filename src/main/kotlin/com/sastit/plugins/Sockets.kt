@@ -8,9 +8,13 @@ import io.ktor.server.websocket.WebSockets
 import io.ktor.server.websocket.pingPeriod
 import io.ktor.server.websocket.timeout
 import io.ktor.server.websocket.webSocket
+import io.ktor.util.logging.error
+import io.ktor.websocket.DefaultWebSocketSession
 import io.ktor.websocket.Frame
 import io.ktor.websocket.readText
+import io.ktor.websocket.send
 import java.time.Duration
+import java.util.Collections
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
@@ -26,16 +30,27 @@ fun Application.configureSockets() {
   }
 
   routing {
+    val connections = Collections.synchronizedSet<DefaultWebSocketSession?>(LinkedHashSet())
     webSocket("/ws") { // websocketSession
-      for (frame in incoming) {
-        if (frame is Frame.Text) {
-          val text = frame.readText()
-          if (container.size == 20) container.removeLast()
-          container.addFirst(text)
-          logger.info("Received: $text")
-          logger.info("Sent: $text")
-          outgoing.send(Frame.Text(text))
+      connections += this
+      try {
+        for (frame in incoming) {
+          if (frame is Frame.Text) {
+            val text = frame.readText()
+            if (container.size == 20) container.removeLast()
+            container.addFirst(text)
+            logger.info("Received: $text")
+            logger.info("Sent: $text")
+            connections.forEach {
+              it.send(text)
+            }
+          }
         }
+      } catch (e: Exception) {
+        logger.error(e)
+      } finally {
+        println("Removing $this!")
+        connections -= this
       }
     }
   }

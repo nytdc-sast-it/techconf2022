@@ -1,5 +1,6 @@
 package com.sastit
 
+import com.sastit.plugins.configureSerialization
 import com.sastit.plugins.configureRouting
 import com.sastit.plugins.configureSockets
 import io.ktor.server.application.Application
@@ -14,4 +15,5 @@ fun main() {
 fun Application.module() {
   configureSockets()
   configureRouting()
+  configureSerialization()
 }

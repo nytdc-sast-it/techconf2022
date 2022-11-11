@@ -1,7 +1,7 @@
 package com.sastit
 
 object ContainerWrapper {
-  private val container: ArrayDeque<String> = ArrayDeque(20)
+  private val container: ArrayDeque<D> = ArrayDeque(20)
 
-  fun getInstance(): ArrayDeque<String> = container
+  fun getInstance(): ArrayDeque<D> = container
 }

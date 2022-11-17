@@ -12,3 +12,14 @@
   right: 0;
   bottom: 0;
 }
+
+.container {
+  height: 100vh;
+  position: relative;
+  display: flex;
+  flex: 1;
+  flex-flow: column;
+  /* text-align: center; */
+  align-items: center;
+  justify-content: center;
+}

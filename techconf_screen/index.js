@@ -44,7 +44,26 @@ class Barrage {
 
 const barage = new Barrage("body");
 
-const arr = [];
+const arr = [
+  { name: "陈天意", id: "21240417", danmu: "我为靳薇弘举大旗" },
+  { name: "杨雷", id: "21260225", danmu: "我叫杨雷，我为我自己代言" },
+  { name: "陈博文", id: "21260110", danmu: "嘿嘿嘿" },
+  { name: "付明洋", id: "21230108", danmu: "抽！" },
+  { name: "炭窑", id: "12121212", danmu: "中！" },
+  { name: "胡海鑫", id: "12121212", danmu: "涛宁哥哥好帅！" },
+  { name: "陈天意", id: "21240417", danmu: "我为靳薇弘举大旗" },
+  { name: "杨雷", id: "21260225", danmu: "我叫杨雷，我为我自己代言" },
+  { name: "陈博文", id: "21260110", danmu: "嘿嘿嘿" },
+  { name: "付明洋", id: "21230108", danmu: "抽！" },
+  { name: "炭窑", id: "12121212", danmu: "中！" },
+  { name: "胡海鑫", id: "12121212", danmu: "涛宁哥哥好帅！" },
+  { name: "陈天意", id: "21240417", danmu: "我为靳薇弘举大旗" },
+  { name: "杨雷", id: "21260225", danmu: "我叫杨雷，我为我自己代言" },
+  { name: "陈博文", id: "21260110", danmu: "嘿嘿嘿" },
+  { name: "付明洋", id: "21230108", danmu: "抽！" },
+  { name: "炭窑", id: "12121212", danmu: "中！" },
+  { name: "胡海鑫", id: "12121212", danmu: "涛宁哥哥好帅！" },
+];
 const ws = new WebSocket("wss://techconf.sastit.com/api/ws");
 ws.onmessage = (e) => {
   const data = JSON.parse(e.data);
@@ -54,4 +73,29 @@ ws.onmessage = (e) => {
     arr.shift();
   }
   barage.shoot(data.danmu);
+};
+
+const fuck = (name, id, danmu) => {
+  document.getElementById("name").innerText = name;
+  document.getElementById("studentId").innerText = id;
+  document.getElementById("danmu").innerText = danmu;
+};
+
+let xingyuner = undefined;
+
+const gun = (i) => {
+  if (i >= arr.length) return;
+  const e = arr[i];
+  setTimeout(() => {
+    fuck(e.name, e.id, e.danmu);
+    gun(i + 1);
+  }, 100);
+};
+
+document.getElementById("get_award").onclick = () => {
+  fuck(arr[0].name, arr[0].id, arr[0].danmu);
+  gun(1);
+  setTimeout(() => {
+    fuck("", "", "");
+  }, 15000);
 };
